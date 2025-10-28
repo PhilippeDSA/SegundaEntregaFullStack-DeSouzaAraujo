@@ -1,19 +1,21 @@
 {
-  "name": "fullstack",
+  "name": "api-products-carts",
   "version": "1.0.0",
-  "description": "-y",
-  "main": "app.js",
+  "description": "Servidor Express con manejo de productos y carritos para la primera entrega.",
+  "main": "src/app.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon",
-    "build": "vite build",
-    "preview": "vite preview"
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
   },
-  "author": "",
+  "keywords": [],
+  "author": "Philippe De Souza Araujo",
   "license": "ISC",
   "dependencies": {
     "express": "^5.1.0",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
     "nodemon": "^3.1.10"
   }
 }
