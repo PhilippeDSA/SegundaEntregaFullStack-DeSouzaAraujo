@@ -17,4 +17,8 @@ router.get("/home", (req, res) => {
 router.get("/realtimeproducts", (req, res) => {
     res.render("realTimeProducts");
 });
+
+router.get("/", (req, res) => {
+    res.redirect("/home");
+});
 export default router;

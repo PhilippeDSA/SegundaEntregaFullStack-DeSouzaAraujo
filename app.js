@@ -7,7 +7,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
 import viewsRouter from "./src/routes/views.router.js"
-
+import ProductManager from "./src/manager/productManager.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,7 +17,7 @@ const PORT = 8080;
 
 //Handlebars
 app.engine("handlebars", handlebars.engine());
-app.set("views", path.join(__dirname, "views"));
+app.set("views", path.join(__dirname, "src", "views"));
 app.set("view engine", "handlebars");
 
 //middlewares
@@ -49,25 +49,32 @@ if (fs.existsSync(productsPath)) {
 //Conexión Web socket
 io.on("connection", (socket) => {
   console.log("Cliente conectado via WebSocket♥");
+
+  //Enviar Lista Inicial
   socket.emit("productosActualizados", products);
-  socket.on("nuevoProducto", (data) => {
-    products.push(data);
+
+  //Agregar Productos
+  socket.on("newProduct", (data) => {
+    const newProduct = {
+      id: Date.now().toString(),
+      ...data
+    };
+    products.push(newProduct);
+
     fs.writeFileSync(productsPath, JSON.stringify(products, null, 2));
     io.emit("productosActualizados", products);
   });
 
-
-  socket.on("eliminarProductos", (id) => {
+  //Eliminar
+  socket.on("deleteProduct", (id) => {
     products = products.filter((p) => p.id !== id);
+
+
     fs.writeFileSync(productsPath, JSON.stringify(products, null, 2));
     io.emit("productosActualizados", products);
   });
 
-});
-app.get("/", (req, res) => {
-  res.redirect("/home");
-});
-
+})
 
 
 
